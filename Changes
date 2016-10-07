@@ -1,0 +1,20 @@
+Revision history for MooseX-Templated
+
+0.03  Mon Feb 24 19:17:28 GMT 2014
+        This needs a whole lot of TLC. In the meantime, I've at least 
+        brought it up to date with Moose 2.0.
+
+0.02  Mon Nov 24 11:06:53 GMT 2008
+        Moved VERSION info to MX::T
+        Moved perigrin to ACKNOWLEDGEMENTS rather than AUTHOR
+          - perigrin very much helped to lay out the project, but he shouldn't
+            get blamed for any of my mistakes in the implementation :)
+        Tests:
+          - Fixed cross platform issues (thanks Taro Nishino RT#41168)
+        lib/MooseX/Templated/View.pm
+          - Fixed handling of single param in render()
+        lib/MooseX/Templated/View/TT.pm
+          - Added more info to the croak message when TT->process fails
+        
+0.01  Thu Nov 13 17:46:37 2008
+        Initial release.

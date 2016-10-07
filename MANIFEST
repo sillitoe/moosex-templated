@@ -1,0 +1,21 @@
+Build.PL
+Changes
+Makefile.PL
+MANIFEST
+META.yml # Will be created by "make dist"
+README
+lib/MooseX/Templated.pm
+lib/MooseX/Templated/View.pm
+lib/MooseX/Templated/Role.pm
+lib/MooseX/Templated/View/TT.pm
+t/pod.t
+t/lib/Farm/Cow.xml.tt
+t/lib/Farm/Cow.pm
+t/lib/Farm/Cow.tt
+t/pod-coverage.t
+t/perlcritic.t
+t/00.load.t
+t/01.api.t
+t/02.render.t
+
+META.json
