@@ -93,7 +93,7 @@ Specify template:
     [% self.make_a_happy_noise %]!
 
     _TT2
-    
+
 Render the object:
 
     $cow = Farm::Cow->new( spots => '8' );
@@ -233,9 +233,9 @@ strongly suggest looking at L<Catalyst>, L<Dancer2>, L<Mojolicious>, etc.
 
 L<Moose>
 
-Please report any bugs or feature requests to
-C<bug-moosex-templated@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org>.
+=head1 REPOSITORY
+
+L<https://github.com/sillitoe/moosex-templated>
 
 =head1 ACKNOWLEDGEMENTS
 
@@ -247,7 +247,7 @@ Ian Sillitoe  C<< <isillitoe@cpan.org> >>
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Ian Sillitoe C<< <isillitoe@cpan.org> >>. All rights reserved.
+Copyright (c) 2016, Ian Sillitoe C<< <isillitoe@cpan.org> >>. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

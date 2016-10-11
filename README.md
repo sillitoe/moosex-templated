@@ -24,7 +24,6 @@ Specify template:
     [% self.make_a_happy_noise %]!
 
     _TT2
-    
 
 Render the object:
 
@@ -165,9 +164,9 @@ strongly suggest looking at [Catalyst](https://metacpan.org/pod/Catalyst), [Danc
 
 [Moose](https://metacpan.org/pod/Moose)
 
-Please report any bugs or feature requests to
-`bug-moosex-templated@rt.cpan.org`, or through the web interface at
-[http://rt.cpan.org](http://rt.cpan.org).
+# REPOSITORY
+
+[https://github.com/sillitoe/moosex-templated](https://github.com/sillitoe/moosex-templated)
 
 # ACKNOWLEDGEMENTS
 
@@ -179,7 +178,7 @@ Ian Sillitoe  `<isillitoe@cpan.org>`
 
 # LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Ian Sillitoe `<isillitoe@cpan.org>`. All rights reserved.
+Copyright (c) 2016, Ian Sillitoe `<isillitoe@cpan.org>`. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See [perlartistic](https://metacpan.org/pod/perlartistic).
