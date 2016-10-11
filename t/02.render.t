@@ -21,9 +21,11 @@ my $xml = <<"_XML";
 _XML
 
 my $summary = <<"_SUMMARY";
+
 This cow has 8 spots. It mostly spends its time
 mooing and chewing. When it is very happy
 it exclaims, "Moooooooo!".
+
 _SUMMARY
 
 my $html = "<h1>Cow</h1><p>$summary</p>";

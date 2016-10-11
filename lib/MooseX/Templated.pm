@@ -73,9 +73,6 @@ MooseX::Templated - template-based rendering of Moose objects
 
 =head1 SYNOPSIS
 
-Include this role within your local Moose-based class.
-
-    # ./lib/Farm/Cow.pm
     package Farm::Cow;
 
     use Moose;
@@ -87,31 +84,17 @@ Include this role within your local Moose-based class.
 
     sub make_a_happy_noise { "Mooooooo" }
 
-    1;
+Specify template:
 
-Decide how you want it to be rendered
-
-...either in a separate file:
-
-    # ./root/Farm/Cow.tt
-    This cow has [% self.spots %] spots - it likes
-    [% self.hobbies.join(" and ") %].
-    [% self.make_a_happy_noise %]!
-
-...or as a local method within the calling class:
-
-    # ./lib/Farm/Cow.pm
-
-    sub _template { return <<'_TEMPLATE';
+    sub _template { <<'_TT2' }
 
     This cow has [% self.spots %] spots - it likes
     [% self.hobbies.join(" and ") %].
     [% self.make_a_happy_noise %]!
 
-    _TEMPLATE
-    }
-
-Go and render
+    _TT2
+    
+Render the object:
 
     $cow = Farm::Cow->new( spots => '8' );
 
@@ -121,9 +104,29 @@ Go and render
     # mooing and chewing.
     # Mooooooo!
 
+Specify the template in a separate file (rather than a local method)
+
+    # lib/Farm/Cow.tt
+
+Change default file location (and other options):
+
+    # lib/Farm/Cow.pm
+
+    with 'MooseX::Templated' => {
+      template_suffix => '.tt2',
+      template_root   => '__LIB__/../root',
+    };
+
+    # root/Farm/Cow.tt2
+
+=head1 DESCRIPTION
+
+The C<MooseX::Templated> role provides the consuming class with a method
+C<render()> which allows template-based rendering of the object.
+
 =head1 METHODS
 
-Including this role will add the following methods to the consuming class:
+The following methods are provided to the consuming class:
 
 =head2 template_engine
 
@@ -132,8 +135,8 @@ the template
 
 =head2 render
 
-Method that selects the template source, performs the rendering and returns
-the results as a string.
+Finds the template source, performs the rendering, returns
+the rendered result as a string.
 
 Note: the location of the template source is affected by (optional) arguments
 and role configuration (see below for details).

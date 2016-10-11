@@ -1,45 +1,141 @@
 # NAME
 
-MooseX::Templated - Template framework for Moose objects
+MooseX::Templated - template-based rendering of Moose objects
 
 # SYNOPSIS
 
-    # Farm/Cow.pm
     package Farm::Cow;
+
     use Moose;
+
     with 'MooseX::Templated';
 
     has 'spots'   => ( is => 'rw' );
     has 'hobbies' => ( is => 'rw', default => sub { ['mooing', 'chewing'] } );
 
-    sub moo { "Moo" }
+    sub make_a_happy_noise { "Mooooooo" }
 
-    # Farm/Cow.tt
+Specify template:
+
+    sub _template { <<'_TT2';
+
     This cow has [% self.spots %] spots - it likes
     [% self.hobbies.join(" and ") %].
-    [% self.moo %]!
+    [% self.make_a_happy_noise %]!
 
-Elsewhere...
+    _TT2
+    }
 
-    my $cow = Farm::Cow->new( spots => '8' );
+In practice:
 
-    $cow->render();
+    $cow = Farm::Cow->new( spots => '8' );
+
+    print $cow->render();
 
     # This cow has 8 spots - it likes
     # mooing and chewing.
-    # Moo!
+    # Mooooooo!
 
-# INTERFACE
+Specify the template in a separate file (rather than a local method)
 
-This module contains no code to speak of - it is just here to provide an obvious root document for the rest of the project.
+    # lib/Farm/Cow.tt
 
-If you're looking for more details on the interface available for rendering your Moose object with templates then you are probably looking for:
+Change default file location (and other options):
 
-[MooseX::Templated::Role](https://metacpan.org/pod/MooseX::Templated::Role)
+    # lib/Farm/Cow.pm
 
-If you are interested in looking under the bonnet or implementing your own templating engine then you probably want to have a look at:
+    with 'MooseX::Templated' => {
+      template_suffix => '.tt2',
+      template_root   => '__LIB__/../root',
+    };
 
-[MooseX::Templated::View](https://metacpan.org/pod/MooseX::Templated::View)
+    # root/Farm/Cow.tt2
+
+# DESCRIPTION
+
+The `MooseX::Templated` role provides the consuming class with a method
+`render()` which allows template-based rendering of the object.
+
+# METHODS
+
+The following methods are provided to the consuming class:
+
+## template\_engine
+
+Accessor for an instance of the templating engine responsible for rendering
+the template
+
+## render
+
+Finds the template source, performs the rendering, returns
+the rendered result as a string.
+
+Note: the location of the template source is affected by (optional) arguments
+and role configuration (see below for details).
+
+## TEMPLATE SOURCE
+
+On calling `render`, the template engine will look for the template source in a
+few different locations: files, methods, inline.
+
+    Farm::Cow->new()->render()
+
+### file
+
+This will look for a template file that relates to the calling package. With
+default settings, the above example would look for:
+
+    __LIB__/Farm/Cow.tt
+
+Where `__LIB__` is the root directory for the modules.
+
+The file path can be affected by configuration options: `template_root`,
+`template_suffix`
+
+### method `_template`
+
+Define a local method within the calling package which returns the template
+source as a string. With default settings, this will look for the method
+`"_template"`, e.g.
+
+    sub Farm::Cow::_template { ... }
+
+The expected method name is affected by configuration option: `template_method_stub`.
+
+### inline
+
+Provide the template source directly to the render function (as a reference
+to the template string).
+
+    Farm::Cow->render( \"Cow goes [% self.moo %]!" );
+
+# CONFIGURATION
+
+Defaults about how to find your template files / methods can be provided at
+role composition, e.g.
+
+    with 'MooseX::Templated' => {
+      template_suffix => '.tt2',
+      template_root   => '__LIB__/../root',
+    };
+
+## template\_suffix
+
+default: ".tt"
+
+## template\_root
+
+default: "\_\_LIB\_\_"
+
+## template\_method\_stub
+
+default: "\_template"
+
+## view\_class
+
+default: "MooseX::Templated::View::TT"
+
+See [MooseX::Templated::Engine](https://metacpan.org/pod/MooseX::Templated::Engine) and [MooseX::Templated::View](https://metacpan.org/pod/MooseX::Templated::View) for more information
 
 # DISCUSSION
 
@@ -53,13 +149,17 @@ It makes some guesses about what your templates are called and where
 they live. Going along with those defaults should get you up and
 running within a couple lines of code.
 
-If you don't want to go with those default suggestions then the intention
-is to provide enough flexible to fit in with your setup with the minimum of
-fuss (if not, then patches/suggestions are always welcome).
+If you don't want to go with those default suggestions then there should be
+enough flexibility to fit your setup with the minimum of fuss
+(patches/suggestions are always welcome).
 
 ## What this module doesn't aim to be
 
-This module is not intended to be an attempt at a MVC framework.
+This module is not intended to be a replacement for the kind of heavy
+lifting that a real MVC framework should be doing.
+
+If you are considering using this for web based rendering then I would
+strongly suggest looking at [Catalyst](https://metacpan.org/pod/Catalyst), [Dancer2](https://metacpan.org/pod/Dancer2), [Mojolicious](https://metacpan.org/pod/Mojolicious), etc.
 
 # SEE ALSO
 
