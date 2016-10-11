@@ -1,9 +1,12 @@
 Revision history for MooseX-Templated
 
-0.05  Tue 11 Oct 19:00:01 BST 2016
-          - docs
-          
-0.04  Tue 11 Oct 18:47:38 BST 2016
+0.06  11 Oct 2016
+        Updated cpan meta data
+
+0.05  11 Oct 2016
+        Doc changes (minor)
+
+0.04  11 Oct BST 2016
         Complete rewrite - similar concepts, but not backwards compatible
           - tidied up the interface and docs
           - removed unnecessary deps (File::Where)
