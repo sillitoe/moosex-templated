@@ -1,4 +1,4 @@
-use Test::More tests => 9;
+use Test::More tests => 8;
 
 use strict;
 use warnings;
@@ -8,12 +8,8 @@ use File::Spec::Functions;
 use lib $FindBin::Bin . '/lib';
 
 my @methods = qw(
-    template_view
-    template_view_class
-    template_view_config
-    template_src_ext
-    template_src_base
     render
+    template_engine
 );
 
 use_ok( 'Farm::Cow' );
@@ -25,13 +21,12 @@ can_ok( $cow, @methods );
 is( $cow->render, "This cow has 8 spots and goes Moooooooo!\n",
     'default render' );
 
-isa_ok( $cow->template_view, 'MooseX::Templated::View::TT', 'template view' );
+my $engine = $cow->template_engine;
 
-is( $cow->template_view_class, 'MooseX::Templated::View::TT', 'template view class' );
+isa_ok( $engine, 'MooseX::Templated::Engine' );
 
-is_deeply( $cow->template_view_config, {}, 'template view config' );
+is( $engine->view_class, 'MooseX::Templated::View::TT', 'template view class' );
 
-is( $cow->template_src_ext, '.tt', 'template source ext' );
+is( $engine->template_suffix, '.tt', 'template source suffix' );
 
-is( $cow->template_src_base, catfile( $FindBin::Bin, 'lib' ), 'template source base' );
-
+is( $engine->template_root, '__LIB__', 'template root dir' );

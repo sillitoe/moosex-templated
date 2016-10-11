@@ -1,6 +1,8 @@
 package Farm::Cow;
+
 use Moose;
-with 'MooseX::Templated::Role';
+
+with 'MooseX::Templated';
 
 has 'spots'    => ( is => 'rw', default => 8 );
 has 'hobbies'  => ( is => 'rw', default => sub { [ 'mooing', 'chewing' ] } );

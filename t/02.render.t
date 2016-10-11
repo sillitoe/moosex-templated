@@ -53,10 +53,8 @@ is( $cow->render( source => $FindBin::Bin . '/lib/Farm/Cow.tt' ),
     'render from file path');
 
 eval { $cow->render( source => "[% self.moo %]!" ) };
-like( $@, qr/\[error\] MooseX::Templated::View:/, "error if couldn't find source" );
+like( $@, qr/\[error\]/, "error if couldn't find source" );
 
 is( $cow->render( source => \"[% self.moo %]! [% self.moo %]!!" ),
     "Moooooooo! Moooooooo!!",
     'render from raw text');
-
-

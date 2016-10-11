@@ -11,114 +11,57 @@ See L<MooseX::Templated::View>
 =cut
 
 use Moose;
-
 use Template;
 use Carp;
-use Readonly;
+use namespace::autoclean;
 
 with 'MooseX::Templated::View';
 
-Readonly my %TT_DEFAULT_CONFIG => (
+my %TT_DEFAULT_CONFIG = (
     'ABSOLUTE' => 1,        # required for using default module name
 );
 
-=head2 template_src_ext
-
-Default extension for Template files
-
-    '.tt'
+=head2 build_default_template_suffix
 
 =cut
 
-has '+template_src_ext' => ( default => '.tt' );
+sub build_default_template_suffix { '.tt' }
 
-=head2 engine_class
-
-    Template
-
-See L<Template>
+=head2 build_renderer
 
 =cut
 
-has '+engine_class'     => ( default => 'Template' );
-
-=head2 engine_config
-
-Default configuration for Template instance
-
-    'ABSOLUTE' => 1
-
-=cut
-
-has '+engine_config'    => ( default => sub { \%TT_DEFAULT_CONFIG } );
-
-
-has '+engine' => ( handles => [
-        'error'
-    ] );
-
-sub BUILD {
+sub build_renderer {
     my $self = shift;
-    $self->set_stash_key( 'self', $self->module );
+    return Template->new( %TT_DEFAULT_CONFIG );
 }
 
-=head2 stash
+=head2 process( $source, $model )
 
-This is the key/value stash that will be passed to the template engine
-
-=head2 set_stash_key( 'key', 'value' )
-
-    stash => { 'key' => 'value' }
-
-=head2 get_stash_key( 'key' )
-
-    # returns 'value'
-
-=head2 empty_stash( )
-
-    stash => {}
-
-=head2 delete_stash_key( 'key' )
-
-    # deletes entry for key
-
-=cut
-
-has 'stash' => (
-    'traits'    => [ 'Hash' ],
-    'isa'       => 'HashRef',
-    'is'        => 'rw',
-    'handles'   => {
-        set_stash_key    => 'set',
-        get_stash_key    => 'get',
-        delete_stash_key => 'delete',
-        stash_keys       => 'keys',
-    },
-    'default' => sub { {} },
-);
-
-
-=head2 process( [ \%stash_vars ]  )
-
-Processes the TT file and returns the output as a string
+Processes the model using the TT source and returns the output as a string
 
 =cut
 
 sub process {
-    my $self        = shift;
-    my $tt_output   = '';
-    my $src         = $self->get_source;
-    
-    $self->engine->process( \$src, $self->stash, \$tt_output )
-        or croak( "couldn't process template (module: ".( blessed $self->module ).")\n".
-                  "\t".$self->error() );
+    my ($self, $source, $model) = @_;
+
+    croak "! Error: expected 'source'" unless $source;
+    croak "! Error: expected 'model' to be Moose object"
+      if ( ! $model || ! blessed $model );
+
+    my $tt_output = '';
+
+    my %stash = ( self => $model );
+
+    $self->renderer->process( \$source, \%stash, \$tt_output )
+        or croak( "couldn't process template (module: ".($self->view_class).")\n".
+                  "\t".$self->renderer->error() );
 
     return $tt_output;
 }
 
 1; # Magic true value required at end of module
 __END__
-
 
 =head1 DEPENDENCIES
 
