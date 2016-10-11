@@ -17,16 +17,16 @@ MooseX::Templated - template-based rendering of Moose objects
 
 Specify template:
 
-    sub _template { <<'_TT2';
+    sub _template { <<'_TT2' }
 
     This cow has [% self.spots %] spots - it likes
     [% self.hobbies.join(" and ") %].
     [% self.make_a_happy_noise %]!
 
     _TT2
-    }
+    
 
-In practice:
+Render the object:
 
     $cow = Farm::Cow->new( spots => '8' );
 
