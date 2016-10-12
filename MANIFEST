@@ -1,4 +1,4 @@
-Build.PL
+.travis.yml
 Changes
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
@@ -14,9 +14,8 @@ lib/MooseX/Templated/Util.pm
 lib/MooseX/Templated/View.pm
 lib/MooseX/Templated/View/TT.pm
 Makefile.PL
-MANIFEST
-META.json
-META.yml			# Will be created by "make dist"
+MANIFEST			This list of files
+META.yml
 README
 README.md
 t/00.load.t
