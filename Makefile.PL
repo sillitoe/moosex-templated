@@ -20,5 +20,4 @@ WriteAll();
 
 if ($Module::Install::AUTHOR) {
 	system( 'pod2text lib/MooseX/Templated.pm > README' );
-	system( 'perl -MPod::Markdown -e \'Pod::Markdown->new->filter(@ARGV)\' lib/MooseX/Templated.pm > README.md' );
 }

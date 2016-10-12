@@ -1,8 +1,13 @@
-# NAME
 
-MooseX::Templated - template-based rendering of Moose objects
+[![Build Status](https://travis-ci.org/sillitoe/moosex-templated.svg?branch=master)](https://travis-ci.org/sillitoe/moosex-templated)
+[![Coverage Status](https://coveralls.io/repos/sillitoe/moosex-templated/badge.png?branch=master)](https://coveralls.io/r/sillitoe/moosex-templated?branch=master)
 
-# SYNOPSIS
+MooseX-Templated
+=================
+
+MooseX::Templated provides template-based rendering for Moose objects
+
+**Include this role within your class**
 
     package Farm::Cow;
 
@@ -15,7 +20,7 @@ MooseX::Templated - template-based rendering of Moose objects
 
     sub make_a_happy_noise { "Mooooooo" }
 
-Specify template:
+**Add the template as a local method..**
 
     sub _template { <<'_TT2' }
 
@@ -25,11 +30,11 @@ Specify template:
 
     _TT2
 
-Or as a separate file:
+**..or as a separate file**
 
     # lib/Farm/Cow.tt
 
-Render the object:
+**Object can now be rendered**
 
     $cow = Farm::Cow->new( spots => '8' );
 
@@ -39,7 +44,9 @@ Render the object:
     # mooing and chewing.
     # Mooooooo!
 
-Provide options (such as default file location):
+# Configuration
+
+Various options can be provided to override default (template system, file location, etc):
 
     # lib/Farm/Cow.pm
 
@@ -51,145 +58,15 @@ Provide options (such as default file location):
     # now looks for
     # root/Farm/Cow.tt2
 
-# DESCRIPTION
+# CPAN
 
-The `MooseX::Templated` role provides the consuming class with a method
-`render()` which allows template-based rendering of the object.
+Full documentation on CPAN
 
-# METHODS
-
-The following methods are provided to the consuming class
-
-## template\_engine
-
-Returns [MooseX::Template::Engine](https://metacpan.org/pod/MooseX::Template::Engine) which is the templating engine responsible
-for rendering the template.
-
-## render
-
-Finds the template source, performs the rendering, returns
-the rendered result as a string.
-
-Note: the location of the template source is affected by (optional) arguments
-and role configuration (see below for details).
-
-## TEMPLATE SOURCE
-
-On calling `render`, the template engine will look for the template source in a
-few different locations: files, methods, inline.
-
-    Farm::Cow->new()->render()
-
-### file
-
-This will look for a template file that relates to the calling package. With
-default settings, the above example would look for:
-
-    __LIB__/Farm/Cow.tt
-
-Where `__LIB__` is the root directory for the modules.
-
-The file path can be affected by configuration options: `template_root`,
-`template_suffix`
-
-### method `_template`
-
-Define a local method within the calling package which returns the template
-source as a string. With default settings, this will look for the method
-`"_template"`, e.g.
-
-    sub Farm::Cow::_template { ... }
-
-The expected method name is affected by configuration option: `template_method_stub`.
-
-### inline
-
-Provide the template source directly to the render function (as a reference
-to the template string).
-
-    Farm::Cow->render( \"Cow goes [% self.moo %]!" );
-
-# CONFIGURATION
-
-Defaults about how to find your template files / methods can be provided at
-role composition, e.g.
-
-    with 'MooseX::Templated' => {
-      template_suffix => '.tt2',
-      template_root   => '__LIB__/../root',
-    };
-
-## view\_class
-
-The class name of the particular template framework being used.
-
-default: "MooseX::Templated::View::TT"
-
-## template\_suffix
-
-Override the default suffix used for the template files
-
-default: ".tt" (from [MooseX::Templated::View::TT](https://metacpan.org/pod/MooseX::Templated::View::TT))
-
-## template\_root
-
-Override the default root directory where the template files are located. The
-string "\_\_LIB\_\_" will be replaced by the location of the installed modules.
-
-default: "\_\_LIB\_\_" (i.e. will expect template files to be alongside modules)
-
-## template\_method\_stub
-
-The default method name to use when specifying the template source with inline
-method.
-
-default: "\_template"
-
-See [MooseX::Templated::Engine](https://metacpan.org/pod/MooseX::Templated::Engine) and [MooseX::Templated::View](https://metacpan.org/pod/MooseX::Templated::View) for more information
-
-# DISCUSSION
-
-## What this module aims to be
-
-The intention of this module is to provide a quick and simple framework
-to glue all things good about Moose to all things sensible about using
-templates (i.e. separate your internals from your display logic).
-
-It makes some guesses about what your templates are called and where
-they live. Going along with those defaults should get you up and
-running within a couple lines of code.
-
-If you don't want to go with those default suggestions then there should be
-enough flexibility to fit your setup with the minimum of fuss
-(patches/suggestions are always welcome).
-
-## What this module doesn't aim to be
-
-This module is not intended to be a replacement for the kind of heavy
-lifting that a real MVC framework should be doing.
-
-If you are considering using this for web based rendering then I would
-strongly suggest looking at [Catalyst](https://metacpan.org/pod/Catalyst), [Dancer2](https://metacpan.org/pod/Dancer2), [Mojolicious](https://metacpan.org/pod/Mojolicious), etc.
-
-# SEE ALSO
-
-[Moose](https://metacpan.org/pod/Moose)
-
-# REPOSITORY
-
-[https://github.com/sillitoe/moosex-templated](https://github.com/sillitoe/moosex-templated)
-
-# ACKNOWLEDGEMENTS
-
-Chris Prather (perigrin)
-
-# AUTHOR
-
-Ian Sillitoe  `<isillitoe@cpan.org>`
+[MooseX::Templated](https://metacpan.org/pod/MooseX::Templated)
 
 # LICENCE AND COPYRIGHT
 
-Copyright (c) 2016, Ian Sillitoe `<isillitoe@cpan.org>`. All rights reserved.
+Copyright (c) 2016, Ian Sillitoe. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See [perlartistic](https://metacpan.org/pod/perlartistic).
