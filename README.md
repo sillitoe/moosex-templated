@@ -1,6 +1,6 @@
 
 [![Build Status](https://travis-ci.org/sillitoe/moosex-templated.svg?branch=master)](https://travis-ci.org/sillitoe/moosex-templated)
-[![Coverage Status](https://coveralls.io/repos/sillitoe/moosex-templated/badge.png?branch=master)](https://coveralls.io/r/sillitoe/moosex-templated?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/sillitoe/moosex-templated/badge.svg?branch=master)](https://coveralls.io/github/sillitoe/moosex-templated?branch=master)
 
 MooseX-Templated
 =================
