@@ -23,6 +23,10 @@ SYNOPSIS
 
         _TT2
 
+    Or as a separate file:
+
+        # lib/Farm/Cow.tt
+
     Render the object:
 
         $cow = Farm::Cow->new( spots => '8' );
@@ -33,11 +37,7 @@ SYNOPSIS
         # mooing and chewing.
         # Mooooooo!
 
-    Specify the template in a separate file (rather than a local method)
-
-        # lib/Farm/Cow.tt
-
-    Change default file location (and other options):
+    Provide options (such as default file location):
 
         # lib/Farm/Cow.pm
 
@@ -46,6 +46,7 @@ SYNOPSIS
           template_root   => '__LIB__/../root',
         };
 
+        # now looks for
         # root/Farm/Cow.tt2
 
 DESCRIPTION
@@ -53,11 +54,11 @@ DESCRIPTION
     "render()" which allows template-based rendering of the object.
 
 METHODS
-    The following methods are provided to the consuming class:
+    The following methods are provided to the consuming class
 
   template_engine
-    Accessor for an instance of the templating engine responsible for
-    rendering the template
+    Returns MooseX::Template::Engine which is the templating engine
+    responsible for rendering the template.
 
   render
     Finds the template source, performs the rendering, returns the rendered
@@ -108,17 +109,29 @@ CONFIGURATION
         template_root   => '__LIB__/../root',
       };
 
+  view_class
+    The class name of the particular template framework being used.
+
+    default: "MooseX::Templated::View::TT"
+
   template_suffix
-    default: ".tt"
+    Override the default suffix used for the template files
+
+    default: ".tt" (from MooseX::Templated::View::TT)
 
   template_root
-    default: "__LIB__"
+    Override the default root directory where the template files are
+    located. The string "__LIB__" will be replaced by the location of the
+    installed modules.
+
+    default: "__LIB__" (i.e. will expect template files to be alongside
+    modules)
 
   template_method_stub
-    default: "_template"
+    The default method name to use when specifying the template source with
+    inline method.
 
-  view_class
-    default: "MooseX::Templated::View::TT"
+    default: "_template"
 
     See MooseX::Templated::Engine and MooseX::Templated::View for more
     information

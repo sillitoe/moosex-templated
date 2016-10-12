@@ -6,7 +6,7 @@ use MooseX::Types::Path::Class qw/ Dir /;
 use Path::Class;
 use namespace::autoclean;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 parameter view_class => (
   is => 'ro',
@@ -94,6 +94,10 @@ Specify template:
 
     _TT2
 
+Or as a separate file:
+
+    # lib/Farm/Cow.tt
+
 Render the object:
 
     $cow = Farm::Cow->new( spots => '8' );
@@ -104,11 +108,7 @@ Render the object:
     # mooing and chewing.
     # Mooooooo!
 
-Specify the template in a separate file (rather than a local method)
-
-    # lib/Farm/Cow.tt
-
-Change default file location (and other options):
+Provide options (such as default file location):
 
     # lib/Farm/Cow.pm
 
@@ -117,6 +117,7 @@ Change default file location (and other options):
       template_root   => '__LIB__/../root',
     };
 
+    # now looks for
     # root/Farm/Cow.tt2
 
 =head1 DESCRIPTION
@@ -126,12 +127,12 @@ C<render()> which allows template-based rendering of the object.
 
 =head1 METHODS
 
-The following methods are provided to the consuming class:
+The following methods are provided to the consuming class
 
 =head2 template_engine
 
-Accessor for an instance of the templating engine responsible for rendering
-the template
+Returns L<MooseX::Template::Engine> which is the templating engine responsible
+for rendering the template.
 
 =head2 render
 
@@ -187,21 +188,31 @@ role composition, e.g.
     template_root   => '__LIB__/../root',
   };
 
+=head2 view_class
+
+The class name of the particular template framework being used.
+
+default: "MooseX::Templated::View::TT"
+
 =head2 template_suffix
 
-default: ".tt"
+Override the default suffix used for the template files
+
+default: ".tt" (from L<MooseX::Templated::View::TT>)
 
 =head2 template_root
 
-default: "__LIB__"
+Override the default root directory where the template files are located. The
+string "__LIB__" will be replaced by the location of the installed modules.
+
+default: "__LIB__" (i.e. will expect template files to be alongside modules)
 
 =head2 template_method_stub
 
+The default method name to use when specifying the template source with inline
+method.
+
 default: "_template"
-
-=head2 view_class
-
-default: "MooseX::Templated::View::TT"
 
 See L<MooseX::Templated::Engine> and L<MooseX::Templated::View> for more information
 

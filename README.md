@@ -25,6 +25,10 @@ Specify template:
 
     _TT2
 
+Or as a separate file:
+
+    # lib/Farm/Cow.tt
+
 Render the object:
 
     $cow = Farm::Cow->new( spots => '8' );
@@ -35,11 +39,7 @@ Render the object:
     # mooing and chewing.
     # Mooooooo!
 
-Specify the template in a separate file (rather than a local method)
-
-    # lib/Farm/Cow.tt
-
-Change default file location (and other options):
+Provide options (such as default file location):
 
     # lib/Farm/Cow.pm
 
@@ -48,6 +48,7 @@ Change default file location (and other options):
       template_root   => '__LIB__/../root',
     };
 
+    # now looks for
     # root/Farm/Cow.tt2
 
 # DESCRIPTION
@@ -57,12 +58,12 @@ The `MooseX::Templated` role provides the consuming class with a method
 
 # METHODS
 
-The following methods are provided to the consuming class:
+The following methods are provided to the consuming class
 
 ## template\_engine
 
-Accessor for an instance of the templating engine responsible for rendering
-the template
+Returns [MooseX::Template::Engine](https://metacpan.org/pod/MooseX::Template::Engine) which is the templating engine responsible
+for rendering the template.
 
 ## render
 
@@ -118,21 +119,31 @@ role composition, e.g.
       template_root   => '__LIB__/../root',
     };
 
+## view\_class
+
+The class name of the particular template framework being used.
+
+default: "MooseX::Templated::View::TT"
+
 ## template\_suffix
 
-default: ".tt"
+Override the default suffix used for the template files
+
+default: ".tt" (from [MooseX::Templated::View::TT](https://metacpan.org/pod/MooseX::Templated::View::TT))
 
 ## template\_root
 
-default: "\_\_LIB\_\_"
+Override the default root directory where the template files are located. The
+string "\_\_LIB\_\_" will be replaced by the location of the installed modules.
+
+default: "\_\_LIB\_\_" (i.e. will expect template files to be alongside modules)
 
 ## template\_method\_stub
 
+The default method name to use when specifying the template source with inline
+method.
+
 default: "\_template"
-
-## view\_class
-
-default: "MooseX::Templated::View::TT"
 
 See [MooseX::Templated::Engine](https://metacpan.org/pod/MooseX::Templated::Engine) and [MooseX::Templated::View](https://metacpan.org/pod/MooseX::Templated::View) for more information
 
