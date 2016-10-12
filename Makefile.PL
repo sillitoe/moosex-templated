@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use inc::Module::Install;
-use Module::Install::External;
 
 name 'MooseX-Templated';
 all_from 'lib/MooseX/Templated.pm';
