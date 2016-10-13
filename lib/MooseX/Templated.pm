@@ -6,7 +6,7 @@ use MooseX::Types::Path::Class qw/ Dir /;
 use Path::Class;
 use namespace::autoclean;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 parameter view_class => (
   is => 'ro',
