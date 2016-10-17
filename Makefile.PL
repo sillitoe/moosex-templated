@@ -14,6 +14,9 @@ requires 'MooseX::Types::Path::Class';
 requires 'namespace::autoclean';
 requires 'Template'                     => '2.20';
 
+test_requires 'Test::More';
+test_requires 'Test::Warn';
+
 tests_recursive();
 
 WriteAll();
