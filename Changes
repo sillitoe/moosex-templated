@@ -1,9 +1,12 @@
 Revision history for MooseX-Templated
 
+0.09  2016-10-17
+
+ - allow render("xml") (with deprecation notice) (GH#2)
+
 0.08  2016-10-13
 
- - fixed broken cross-platform test:
-   https://github.com/sillitoe/moosex-templated/issues/1
+ - fixed broken cross-platform test (GH#1)
 
 0.07  2016-10-12
 

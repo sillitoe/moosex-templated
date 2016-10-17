@@ -67,13 +67,13 @@ METHODS
     Note: the location of the template source is affected by (optional)
     arguments and role configuration (see below for details).
 
-  TEMPLATE SOURCE
-    On calling "render", the template engine will look for the template
-    source in a few different locations: files, methods, inline.
+TEMPLATE SOURCE
+    The template engine will search for the template source in a few
+    different locations: files, methods, inline.
 
       Farm::Cow->new()->render()
 
-   file
+   File system
     This will look for a template file that relates to the calling package.
     With default settings, the above example would look for:
 
@@ -84,7 +84,7 @@ METHODS
     The file path can be affected by configuration options: "template_root",
     "template_suffix"
 
-   method "_template"
+   Local method in code
     Define a local method within the calling package which returns the
     template source as a string. With default settings, this will look for
     the method "_template", e.g.
@@ -94,7 +94,7 @@ METHODS
     The expected method name is affected by configuration option:
     "template_method_stub".
 
-   inline
+   Inline
     Provide the template source directly to the render function (as a
     reference to the template string).
 
@@ -102,63 +102,38 @@ METHODS
 
 CONFIGURATION
     Defaults about how to find your template files / methods can be provided
-    at role composition, e.g.
+    at role composition:
 
       with 'MooseX::Templated' => {
-        template_suffix => '.tt2',
-        template_root   => '__LIB__/../root',
+        view_class           => 'MooseX::Templated::View::TT',
+        template_suffix      => '.tt',
+        template_root        => '__LIB__',
+        template_method_stub => '_template',
       };
 
   view_class
     The class name of the particular template framework being used.
 
-    default: "MooseX::Templated::View::TT"
-
   template_suffix
-    Override the default suffix used for the template files
-
-    default: ".tt" (from MooseX::Templated::View::TT)
+    Override the suffix used for the template files (the default is provided
+    by the "view_class")
 
   template_root
-    Override the default root directory where the template files are
-    located. The string "__LIB__" will be replaced by the location of the
-    installed modules.
+    Override the location where the template files are found. The string
+    "__LIB__" will be replaced by the location of the installed modules,
+    e.g.
 
-    default: "__LIB__" (i.e. will expect template files to be alongside
-    modules)
+      template_root => '__LIB__/../root'
 
   template_method_stub
-    The default method name to use when specifying the template source with
-    inline method.
-
-    default: "_template"
+    Override the method name to use when specifying the template source with
+    a local method.
 
     See MooseX::Templated::Engine and MooseX::Templated::View for more
     information
 
-DISCUSSION
-  What this module aims to be
-    The intention of this module is to provide a quick and simple framework
-    to glue all things good about Moose to all things sensible about using
-    templates (i.e. separate your internals from your display logic).
-
-    It makes some guesses about what your templates are called and where
-    they live. Going along with those defaults should get you up and running
-    within a couple lines of code.
-
-    If you don't want to go with those default suggestions then there should
-    be enough flexibility to fit your setup with the minimum of fuss
-    (patches/suggestions are always welcome).
-
-  What this module doesn't aim to be
-    This module is not intended to be a replacement for the kind of heavy
-    lifting that a real MVC framework should be doing.
-
-    If you are considering using this for web based rendering then I would
-    strongly suggest looking at Catalyst, Dancer2, Mojolicious, etc.
-
 SEE ALSO
-    Moose
+    Moose, Template
 
 REPOSITORY
     <https://github.com/sillitoe/moosex-templated>

@@ -42,7 +42,7 @@ use MooseX::Templated::View::TT;
 use MooseX::Templated::Util qw/ where_pm /;
 use MooseX::Types::Path::Class qw/ Dir /;
 use Path::Class qw/ file /;
-use Carp qw/ croak /;
+use Carp qw/ carp croak /;
 
 our $VERSION = $MooseX::Templated::VERSION; # CPAN complained when VERSION moved to MX::T
 
@@ -109,6 +109,19 @@ sub render {
   my $self = shift;
   my $args = scalar @_ == 1 ? $_[0] : { @_ };
 
+  # if this is a single string and looks like a shortcut then
+  # we'll allow this for the moment
+  if ( !ref $args && $args =~ /^[a-zA-Z0-9_]+$/ ) {
+
+    # https://rt.cpan.org/Public/Bug/Display.html?id=109631
+    local $Carp::Internal{ 'Moose::Meta::Method::Delegation' } = 1;
+
+    carp "DEPRECATED USAGE: render('$args') should be written render(source => '$args')";
+    $args = { source => $args };
+  }
+  if ( ref $args ne 'HASH' ) {
+    croak "ERROR: unexpected arguments to render ($args)";
+  }
   my $source_arg = $args->{source};
 
   my $source = $self->get_source( $source_arg );

@@ -6,7 +6,7 @@ use MooseX::Types::Path::Class qw/ Dir /;
 use Path::Class;
 use namespace::autoclean;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 parameter view_class => (
   is => 'ro',
@@ -41,6 +41,7 @@ role {
     isa => 'MooseX::Templated::Engine',
     lazy => 1,
     builder => '_build_template_engine',
+    handles => [ 'render' ],
   );
 
   method "_build_template_engine" => sub {
@@ -142,14 +143,14 @@ the rendered result as a string.
 Note: the location of the template source is affected by (optional) arguments
 and role configuration (see below for details).
 
-=head2 TEMPLATE SOURCE
+=head1 TEMPLATE SOURCE
 
-On calling C<render>, the template engine will look for the template source in a
-few different locations: files, methods, inline.
+The template engine will search for the template source in a few different
+locations: files, methods, inline.
 
   Farm::Cow->new()->render()
 
-=head3 file
+=head3 File system
 
 This will look for a template file that relates to the calling package. With
 default settings, the above example would look for:
@@ -161,7 +162,7 @@ Where C<__LIB__> is the root directory for the modules.
 The file path can be affected by configuration options: C<template_root>,
 C<template_suffix>
 
-=head3 method C<_template>
+=head3 Local method in code
 
 Define a local method within the calling package which returns the template
 source as a string. With default settings, this will look for the method
@@ -171,7 +172,7 @@ C<"_template">, e.g.
 
 The expected method name is affected by configuration option: C<template_method_stub>.
 
-=head3 inline
+=head3 Inline
 
 Provide the template source directly to the render function (as a reference
 to the template string).
@@ -181,68 +182,40 @@ to the template string).
 =head1 CONFIGURATION
 
 Defaults about how to find your template files / methods can be provided at
-role composition, e.g.
+role composition:
 
   with 'MooseX::Templated' => {
-    template_suffix => '.tt2',
-    template_root   => '__LIB__/../root',
+    view_class           => 'MooseX::Templated::View::TT',
+    template_suffix      => '.tt',
+    template_root        => '__LIB__',
+    template_method_stub => '_template',
   };
 
 =head2 view_class
 
 The class name of the particular template framework being used.
 
-default: "MooseX::Templated::View::TT"
-
 =head2 template_suffix
 
-Override the default suffix used for the template files
-
-default: ".tt" (from L<MooseX::Templated::View::TT>)
+Override the suffix used for the template files (the default is provided by the C<view_class>)
 
 =head2 template_root
 
-Override the default root directory where the template files are located. The
-string "__LIB__" will be replaced by the location of the installed modules.
+Override the location where the template files are found. The
+string "__LIB__" will be replaced by the location of the installed modules, e.g.
 
-default: "__LIB__" (i.e. will expect template files to be alongside modules)
+  template_root => '__LIB__/../root'
 
 =head2 template_method_stub
 
-The default method name to use when specifying the template source with inline
+Override the method name to use when specifying the template source with a local
 method.
-
-default: "_template"
 
 See L<MooseX::Templated::Engine> and L<MooseX::Templated::View> for more information
 
-=head1 DISCUSSION
-
-=head2 What this module aims to be
-
-The intention of this module is to provide a quick and simple framework
-to glue all things good about Moose to all things sensible about using
-templates (i.e. separate your internals from your display logic).
-
-It makes some guesses about what your templates are called and where
-they live. Going along with those defaults should get you up and
-running within a couple lines of code.
-
-If you don't want to go with those default suggestions then there should be
-enough flexibility to fit your setup with the minimum of fuss
-(patches/suggestions are always welcome).
-
-=head2 What this module doesn't aim to be
-
-This module is not intended to be a replacement for the kind of heavy
-lifting that a real MVC framework should be doing.
-
-If you are considering using this for web based rendering then I would
-strongly suggest looking at L<Catalyst>, L<Dancer2>, L<Mojolicious>, etc.
-
 =head1 SEE ALSO
 
-L<Moose>
+L<Moose>, L<Template>
 
 =head1 REPOSITORY
 
